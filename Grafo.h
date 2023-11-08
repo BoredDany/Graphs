@@ -28,16 +28,16 @@ public:
     void setEdges(std::vector < std::list < std::pair < int, C > > >& edges);
 
     //inserting
-    void addVertex(T& vertex);
-    void addEdge(T& origin, T& destination, C cost);
+    bool addVertex(T& vertex);
+    bool addEdge(T& origin, T& destination, C cost);
 
     //searching
-    T searchVertice(T& vertex);
-    std::pair < int, C > searchEdge(T& origin, T& destination);
+    int searchVertice(T& vertex);
+    bool searchEdge(T& origin, T& destination);
 
     //deleting
-    void deleteVertex(T& vertex);
-    void deleteEdge(T& origin, T& destination);
+    bool deleteVertex(T& vertex);
+    bool deleteEdge(T& origin, T& destination);
 
     //general info
     int numVertices();
@@ -47,6 +47,7 @@ public:
     void plain();
     void bfs();
     void dfs();
+    void showEdges();
 
     //algorithms
     void bridgeEdges();
