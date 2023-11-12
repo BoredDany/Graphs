@@ -7,6 +7,7 @@
 #include <list>
 #include <utility>
 #include <iostream>
+#include <queue>
 
 //constructors
 
@@ -211,12 +212,65 @@ void Graph<T, C>::plain(){
 
 template < class T, class C >
 void Graph<T, C>::bfs(){
+    std::vector<bool> visited(this->vertices.size(), false);
+    std::queue<int> vertexQueue;
 
+    for (int i = 0; i < this->vertices.size(); i++) {
+        if (!visited[i]) {
+            doBFS(i, visited, vertexQueue);
+        }
+    }
+}
+
+template < class T, class C >
+void Graph<T, C>::doBFS(int startVertex, std::vector<bool>& visited, std::queue<int>& vertexQueue){
+    visited[startVertex] = true;
+    vertexQueue.push(startVertex);
+
+    while (!vertexQueue.empty()) {
+        int currentVertex = vertexQueue.front();
+        vertexQueue.pop();
+
+        std::cout << this->vertices[currentVertex] << ", ";
+
+        typename  std::list < std::pair < int, C > >::iterator itL;
+        itL = this->edges[currentVertex].begin();
+
+        for( ; itL != this->edges[currentVertex].end() ; itL++){
+            int neighbor = (*itL).first;
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                vertexQueue.push(neighbor);
+            }
+        }
+    }
 }
 
 template < class T, class C >
 void Graph<T, C>::dfs(){
+    std::vector<bool> visited(this->vertices.size(), false);
 
+    for (int i = 0; i < this->vertices.size(); ++i) {
+        if (!visited[i]) {
+            doDFS(i, visited);
+        }
+    }
+}
+
+template <class T, class C>
+void Graph<T, C>::doDFS(int currentVertex, std::vector<bool>& visited) {
+    visited[currentVertex] = true;
+    std::cout << this->vertices[currentVertex] << ", ";
+
+    typename  std::list < std::pair < int, C > >::iterator itL;
+    itL = this->edges[currentVertex].begin();
+
+    for ( ; itL != this->edges[currentVertex].end(); itL++) {
+        int neighbor = (*itL).first;
+        if (!visited[neighbor]) {
+            doDFS(neighbor, visited);
+        }
+    }
 }
 
 template < class T, class C >

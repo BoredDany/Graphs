@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <utility>
+#include <queue>
 
 template < class T, class C >
 class Graph {
@@ -47,7 +48,9 @@ public:
     //tours
     void plain();
     void bfs();
+    void doBFS(int startVertex, std::vector<bool>& visited, std::queue<int>& vertexQueue);
     void dfs();
+    void doDFS(int currentVertex, std::vector<bool>& visited);
     void showEdges();
 
     //algorithms

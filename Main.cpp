@@ -21,7 +21,7 @@ int main(){
 
     readVertices("c.txt", g);
     readEdges("c.txt", g);
-    cout<<"VERTICES: "<<endl;
+    /*cout<<"VERTICES: "<<endl;
     g.plain();
     cout<<"\nEDGES: "<<endl;
     g.showEdges();
@@ -30,14 +30,14 @@ int main(){
     cout<<"\nNUM EDGES: ";
     cout<<g.numEdges();
 
-    /*cout << "ELIMINAR ARISTA" << endl;
+    cout << "ELIMINAR ARISTA" << endl;
     cout << "Origen: ";
     cin >> origen;
     cout << "Destino: ";
     cin >> destino;
     g.deleteEdge(origen, destino);
     cout<<"\nEDGES: "<<endl;
-    g.showEdges();*/
+    g.showEdges();
 
     cout << "ELIMINAR VERTICE" << endl;
     cout << "Vertice: ";
@@ -46,8 +46,13 @@ int main(){
     cout<<"VERTICES: "<<endl;
     g.plain();
     cout<<"\nEDGES: "<<endl;
-    g.showEdges();
+    g.showEdges();*/
 
+    cout<<"BFS: "<<endl;
+    g.bfs();
+
+    cout<<"\nDFS: "<<endl;
+    g.dfs();
     return 0;
 }
 
