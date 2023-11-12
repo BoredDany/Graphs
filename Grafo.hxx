@@ -81,6 +81,7 @@ int Graph<T, C>::searchVertice(T& vertex){
     for(int i = 0 ; i < this->vertices.size() ; i++){
         if(this->vertices[i] == vertex){
             vertexFound = i;
+            break;
         }
     }
     return vertexFound;
@@ -107,32 +108,69 @@ bool Graph<T, C>::searchEdge(T& origin, T& destination){
 
 //deleting
 
-template < class T, class C >
-bool Graph<T, C>::deleteVertex(T& vertex){
+template <class T, class C>
+bool Graph<T, C>::deleteVertex(T& vertex) {
     int vertexIndex = searchVertice(vertex);
-    if ( vertexIndex != -1) {
-        std::vector< std::list< pair<int,C> > >::iterator itA, posE;
-        int ind = 0;
-        for (itA = aristas.begin(); itA != aristas.end(); itA++, ind++) {
-            if (ind == i_vert) {
-                posE = itA;
+    int ind = 0;
+    typename std::vector<T>::iterator itEVertex;
+    typename std::vector<std::list<std::pair<int, C>>>::iterator itEdges, itEEdge;
+    typename std::list<std::pair<int, C>>::iterator itList, itEList;
+
+    if (vertexIndex != -1) {
+        ind = 0;
+        for (itEdges = this->edges.begin(); itEdges != this->edges.end(); itEdges++, ind++) {
+            if (ind == vertexIndex) {
+                itEEdge = itEdges; // guarda posicion a eliminar del vector de aristas
             } else {
-                std::list< pair<int,U> >::iterator itList, posEE;
-                for (itList = itA->begin(); itList != itA->end(); itList++) {
-                    if (itList->first == i_vert) {
-                        posEE = itList;
+                for (itList = itEdges->begin(); itList != itEdges->end(); itList++) {
+                    if (itList->first == vertexIndex) { // compara con ind en lugar de vertexIndex
+                        itEList = itList;
+                        itEdges->erase(itEList);
+                        break;
                     }
                 }
-                itA->erase(posEE);
             }
         }
-        aristas.erase(posE);
+        if (itEEdge != this->edges.end()) {
+            this->edges.erase(itEEdge);
+        }
+        itEVertex = this->vertices.begin() + vertexIndex;
+        this->vertices.erase(itEVertex);
+        updateEdges(vertexIndex);
+        return true;
     }
     return false;
 }
 
 template < class T, class C >
+void Graph<T, C>::updateEdges(int index){
+    typename  std::list < std::pair < int, C > >::iterator itL;
+
+    for(int i = 0 ; i < this->edges.size() ; i++){
+        for(itL = this->edges[i].begin() ; itL != this->edges[i].end() ; itL++){
+            if((*itL).first > index){
+                (*itL).first-=1;
+            }
+        }
+    }
+}
+
+template < class T, class C >
 bool Graph<T, C>::deleteEdge(T& origin, T& destination){
+    int i_ori = searchVertice(origin);
+    int i_des = searchVertice(destination);
+    typename  std::list < std::pair < int, C > >::iterator itList, posE;
+
+    if ( i_ori != -1 && i_des != -1 ) {
+        for (itList = this->edges[i_ori].begin(); itList != this->edges[i_ori].end(); itList++) {
+            if (itList->first == i_des){
+                posE = itList;
+                break;
+            }
+        }
+        this->edges[i_ori].erase(posE);
+        return true;
+    }
     return false;
 }
 

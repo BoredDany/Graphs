@@ -17,6 +17,8 @@ void readEdges(string archivo, Graph<int, int>& graph);
 
 int main(){
     Graph <int, int> g;
+    int origen, destino, vertice;
+
     readVertices("c.txt", g);
     readEdges("c.txt", g);
     cout<<"VERTICES: "<<endl;
@@ -27,6 +29,25 @@ int main(){
     cout<<g.numVertices();
     cout<<"\nNUM EDGES: ";
     cout<<g.numEdges();
+
+    /*cout << "ELIMINAR ARISTA" << endl;
+    cout << "Origen: ";
+    cin >> origen;
+    cout << "Destino: ";
+    cin >> destino;
+    g.deleteEdge(origen, destino);
+    cout<<"\nEDGES: "<<endl;
+    g.showEdges();*/
+
+    cout << "ELIMINAR VERTICE" << endl;
+    cout << "Vertice: ";
+    cin >> vertice;
+    g.deleteVertex(vertice);
+    cout<<"VERTICES: "<<endl;
+    g.plain();
+    cout<<"\nEDGES: "<<endl;
+    g.showEdges();
+
     return 0;
 }
 

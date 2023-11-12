@@ -38,6 +38,7 @@ public:
     //deleting
     bool deleteVertex(T& vertex);
     bool deleteEdge(T& origin, T& destination);
+    void updateEdges(int index);
 
     //general info
     int numVertices();
