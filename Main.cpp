@@ -46,13 +46,16 @@ int main(){
     cout<<"VERTICES: "<<endl;
     g.plain();
     cout<<"\nEDGES: "<<endl;
-    g.showEdges();*/
+    g.showEdges();
 
     cout<<"BFS: "<<endl;
     g.bfs();
 
     cout<<"\nDFS: "<<endl;
     g.dfs();
+    bool connected = g.connected();
+    cout << "Conectado: " << connected << endl;*/
+    g.connectedComponents();
     return 0;
 }
 

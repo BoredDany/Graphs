@@ -286,6 +286,7 @@ void Graph<T, C>::showEdges(){
         }
         std::cout << std::endl;
     }
+
 }
 
 //----------------------------------------------------------------------------------------------
@@ -300,11 +301,72 @@ void Graph<T, C>::bridgeEdges(){
 template < class T, class C >
 void Graph<T, C>::connectedComponents(){
 
+    std::vector<bool> visited(this->vertices.size(), false);
+    std::list < std::list < T > > components;
+
+    for (int i = 0; i < this->vertices.size(); ++i) {
+        if (!visited[i]) {
+            std::list < T >  component;
+            getComponents(i, visited, component);
+            components.push_back(component);
+        }
+    }
+
+    for(std::list < T > l: components){
+        std::cout << "Component" << std::endl;
+        for(T c: l){
+            std::cout << c << " ";
+        }
+        std::cout << std::endl;
+    }
+
+}
+
+template < class T, class C >
+void Graph<T, C>::getComponents(int currentVertex, std::vector<bool>& visited, std::list < T >& components){
+    visited[currentVertex] = true;
+    components.push_back(this->vertices[currentVertex]);
+    typename  std::list < std::pair < int, C > >::iterator itL;
+    itL = this->edges[currentVertex].begin();
+
+    for ( ; itL != this->edges[currentVertex].end(); itL++) {
+        int neighbor = (*itL).first;
+        if (!visited[neighbor]) {
+            getComponents(neighbor, visited, components);
+        }
+    }
 }
 
 template < class T, class C >
 bool Graph<T, C>::connected(){
+    std::vector<bool> visited(this->vertices.size(), false);
+    int numComponents = 0;
+    for (int i = 0; i < this->vertices.size(); ++i) {
+        if (!visited[i]) {
+            doDFSConnected(i, visited);
+            numComponents++;
+        }
+    }
+    std::cout << "\nHay " << numComponents << " componentes conectados" << std::endl;
+    if(numComponents == 1){
+        return true;
+    }
+    return false;
+}
 
+template <class T, class C>
+void Graph<T, C>::doDFSConnected(int currentVertex, std::vector<bool>& visited) {
+    visited[currentVertex] = true;
+
+    typename  std::list < std::pair < int, C > >::iterator itL;
+    itL = this->edges[currentVertex].begin();
+
+    for ( ; itL != this->edges[currentVertex].end(); itL++) {
+        int neighbor = (*itL).first;
+        if (!visited[neighbor]) {
+            doDFSConnected(neighbor, visited);
+        }
+    }
 }
 
 template < class T, class C >

@@ -55,8 +55,13 @@ public:
 
     //algorithms
     void bridgeEdges();
+
     void connectedComponents();
+    void getComponents(int currentVertex, std::vector<bool>& visited, std::list < T >& components);
+
     bool connected();
+    void doDFSConnected(int currentVertex, std::vector<bool>& visited);
+
     bool stronglyConnected();
     void prim();
     void dijkstra();
