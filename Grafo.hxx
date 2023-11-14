@@ -126,7 +126,7 @@ bool Graph<T, C>::deleteVertex(T& vertex) {
                 itEEdge = itEdges; // guarda posicion a eliminar del vector de aristas
             } else {
                 for (itList = itEdges->begin(); itList != itEdges->end(); itList++) {
-                    if (itList->first == vertexIndex) { // compara con ind en lugar de vertexIndex
+                    if (itList->first == vertexIndex) {
                         itEList = itList;
                         itEdges->erase(itEList);
                         break;
@@ -297,7 +297,25 @@ void Graph<T, C>::showEdges(){
 
 template < class T, class C >
 void Graph<T, C>::bridgeEdges(){
+    std::list < std::pair < int, int > > bridges;
 
+    for(int i = 0 ; i < this->edges.size() ; i++){
+        std::list < std::pair < int, C > > auxEdges = this->edges[i];
+        for(typename  std::list < std::pair < int, C > >::iterator itL = auxEdges.begin() ; itL != auxEdges.end() ; itL++){
+            this->deleteEdge(this->vertices[i], this->vertices[(*itL).first]);
+            if(!this->connected()){
+                std::pair < int, int > bridge (i, (*itL).first);
+                bridges.push_back(bridge);
+            }
+            this->addEdge(this->vertices[i], this->vertices[(*itL).first], (*itL).second);
+        }
+    }
+
+    if(!bridges.empty()){
+        for(typename  std::list < std::pair < int, C > >::iterator itB = bridges.begin() ; itB != bridges.end() ; itB++){
+            std::cout << "Bridge: " << this->vertices[(*itB).first] << "-" << this->vertices[(*itB).second] << std::endl;
+        }
+    }
 }
 
 template < class T, class C >
@@ -373,51 +391,61 @@ void Graph<T, C>::doDFSConnected(int currentVertex, std::vector<bool>& visited) 
 
 template < class T, class C >
 bool Graph<T, C>::stronglyConnected(){
+    std::vector<bool> visited(this->vertices.size(), false);
+
+    for(int i = 0 ; i < this->vertices.size() ; i++){
+        if(!visited[i]){
+            visited[i] = true;
+            std::vector <T> desc = getDesc(i);
+            std::vector <T> asc = getAsc(i);
+            std::set <T> component;
+            if(component.size() == this->vertices.size()){
+                std::cout << "IS STRONGLY CONNECTED" << std::endl;
+                return true;
+            }
+        }
+    }
+    return false;
+/*
+ * - Obtener el conjunto de vértices descendientes D(v), incluido v (vértice de partida).
+ * - Obtener el conjunto de vértices ascendientes A(v), incluido v (vértice de partida).
+ * - Vértices comunes entre D y A forman el componente fuertemente
+ * conectado al que pertenece v, si es igual al conjunto de vértices del grafo
+ * es fuertemente conectado.
+ * - Si no, escoger un vértice que no esté en la intersección y repetir hasta visitarlos todos.
+ */
 
 }
 
 template <class T, class C>
-void Graph<T, C>::prim1(T& initial) {
+std::vector <T> Graph<T, C>::getDesc(int i){
     std::vector<bool> visited(this->vertices.size(), false);
-    Graph<T, C> minGraph;
-    int currentVertex = searchVertice(initial);
-    minGraph.addVertex(initial);
-    visited[currentVertex] = true;
-
-    // mientras que falten vértices
-    while (minGraph.vertices.size() < this->vertices.size()) {
-        C cost = INT_MAX;
-        int origin = -1, destination = -1;
-
-        // recorro todos los vértices visitados
-        for (int i = 0; i < this->vertices.size(); i++) {
-            if (visited[i]) {
-                // recorro las aristas del vértice actual
-                for (const auto& edge : this->edges[i]) {
-                    int neighbor = edge.first;
-                    C edgeCost = edge.second;
-
-                    // si el vértice vecino no está visitado y la arista es de menor costo
-                    if (!visited[neighbor] && edgeCost < cost) {
-                        cost = edgeCost;
-                        origin = i;
-                        destination = neighbor;
-                    }
-                }
-            }
-        }
-
-        if (origin != -1 && destination != -1) {
-            minGraph.addVertex(this->vertices[destination]);
-            minGraph.addEdge(this->vertices[origin], this->vertices[destination], cost);
-            visited[destination] = true;
-        }
+    std::vector <T> desc;
+    desc.push_back(this->vertices[i]);
+    for(typename std::list < std::pair <int, C> >::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
+        desc.push_back(this->vertices[(*it).first]);
+        getDescDFS(i, desc);
     }
+    return desc;
+}
 
-    std::cout << "VERTICES" << std::endl;
-    minGraph.plain();
-    std::cout << "EDGES" << std::endl;
-    minGraph.showEdges();
+template <class T, class C>
+void Graph<T, C>::getDescDFS(int i, std::vector<T>& desc){
+    desc.push_back(this->vertices[i]);
+    for(typename std::list < std::pair <int, C> >::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
+        desc.push_back(this->vertices[(*it).first]);
+        getDescDFS(i, desc);
+    }
+}
+
+template <class T, class C>
+std::vector <T> Graph<T, C>::getAsc(int i){
+    std::vector <T> asc;
+    asc.push_back(this->vertices[i]);
+
+
+
+    return asc;
 }
 
 template <class T, class C>

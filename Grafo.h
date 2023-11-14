@@ -55,6 +55,7 @@ public:
 
     //algorithms
     void bridgeEdges();
+    void findBridges(int u, std::vector<bool>& visited, std::vector<int>& disc, std::vector<int>& low, std::vector<int>& parent);
 
     void connectedComponents();
     void getComponents(int currentVertex, std::vector<bool>& visited, std::list < T >& components);
@@ -62,9 +63,11 @@ public:
     bool connected();
     void doDFSConnected(int currentVertex, std::vector<bool>& visited);
 
+    std::vector <T> getDesc(int i);
+    std::vector <T> getAsc(int i);
     bool stronglyConnected();
+
     void prim(T& initial);
-    void prim1(T& initial);
     void dijkstra(T& initial);
 
 };

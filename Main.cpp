@@ -34,13 +34,11 @@ int main(){
         cout<<"aristas:";
         cin>>e;
         for(int j = 0 ; j < e ; j++){
-            cout<<"origen:";
-            cin>>ori;
             cout<<"destino:";
             cin>>dest;
             cout<<"costo:";
             cin>>cost;
-            g.addEdge(ori, dest, cost);
+            g.addEdge(g.getVertices()[i], dest, cost);
         }
     }
 
@@ -78,9 +76,12 @@ int main(){
     g.dfs();
     bool connected = g.connected();
     cout << "Conectado: " << connected << endl;
-    g.connectedComponents();*/
+    g.connectedComponents();
     vertice = 1;
+    g.prim(vertice);
     g.dijkstra(vertice);
+    g.bridgeEdges();*/
+
     return 0;
 }
 
