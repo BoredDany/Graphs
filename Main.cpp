@@ -82,6 +82,10 @@ int main(){
     g.dijkstra(vertice);
     g.bridgeEdges();*/
 
+    vertice = 1;
+    g.prim(vertice);
+    g.dijkstra(vertice);
+
     return 0;
 }
 

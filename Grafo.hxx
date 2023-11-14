@@ -320,10 +320,8 @@ void Graph<T, C>::bridgeEdges(){
 
 template < class T, class C >
 void Graph<T, C>::connectedComponents(){
-
     std::vector<bool> visited(this->vertices.size(), false);
     std::list < std::list < T > > components;
-
     for (int i = 0; i < this->vertices.size(); ++i) {
         if (!visited[i]) {
             std::list < T >  component;
@@ -331,7 +329,6 @@ void Graph<T, C>::connectedComponents(){
             components.push_back(component);
         }
     }
-
     for(std::list < T > l: components){
         std::cout << "Component" << std::endl;
         for(T c: l){
@@ -339,7 +336,6 @@ void Graph<T, C>::connectedComponents(){
         }
         std::cout << std::endl;
     }
-
 }
 
 template < class T, class C >
@@ -388,7 +384,7 @@ void Graph<T, C>::doDFSConnected(int currentVertex, std::vector<bool>& visited) 
         }
     }
 }
-
+/*
 template < class T, class C >
 bool Graph<T, C>::stronglyConnected(){
     std::vector<bool> visited(this->vertices.size(), false);
@@ -406,14 +402,6 @@ bool Graph<T, C>::stronglyConnected(){
         }
     }
     return false;
-/*
- * - Obtener el conjunto de vértices descendientes D(v), incluido v (vértice de partida).
- * - Obtener el conjunto de vértices ascendientes A(v), incluido v (vértice de partida).
- * - Vértices comunes entre D y A forman el componente fuertemente
- * conectado al que pertenece v, si es igual al conjunto de vértices del grafo
- * es fuertemente conectado.
- * - Si no, escoger un vértice que no esté en la intersección y repetir hasta visitarlos todos.
- */
 
 }
 
@@ -446,7 +434,7 @@ std::vector <T> Graph<T, C>::getAsc(int i){
 
 
     return asc;
-}
+}*/
 
 template <class T, class C>
 void Graph<T, C>::prim(T& initial) {
