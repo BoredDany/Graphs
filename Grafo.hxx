@@ -8,6 +8,8 @@
 #include <utility>
 #include <iostream>
 #include <queue>
+#include <climits>
+#include <limits>
 
 //constructors
 
@@ -22,12 +24,12 @@ Graph<T, C>::Graph() {
 
 template < class T, class C >
 std::vector < T > Graph<T, C>::getVertices(){
-    return this.vertices;
+    return this->vertices;
 }
 
 template < class T, class C >
 std::vector < std::list < std::pair < int, C > > > Graph<T, C>::getEdges(){
-    return this.edges;
+    return this->edges;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -374,14 +376,158 @@ bool Graph<T, C>::stronglyConnected(){
 
 }
 
-template < class T, class C >
-void Graph<T, C>::prim(){
+template <class T, class C>
+void Graph<T, C>::prim1(T& initial) {
+    std::vector<bool> visited(this->vertices.size(), false);
+    Graph<T, C> minGraph;
+    int currentVertex = searchVertice(initial);
+    minGraph.addVertex(initial);
+    visited[currentVertex] = true;
 
+    // mientras que falten vértices
+    while (minGraph.vertices.size() < this->vertices.size()) {
+        C cost = INT_MAX;
+        int origin = -1, destination = -1;
+
+        // recorro todos los vértices visitados
+        for (int i = 0; i < this->vertices.size(); i++) {
+            if (visited[i]) {
+                // recorro las aristas del vértice actual
+                for (const auto& edge : this->edges[i]) {
+                    int neighbor = edge.first;
+                    C edgeCost = edge.second;
+
+                    // si el vértice vecino no está visitado y la arista es de menor costo
+                    if (!visited[neighbor] && edgeCost < cost) {
+                        cost = edgeCost;
+                        origin = i;
+                        destination = neighbor;
+                    }
+                }
+            }
+        }
+
+        if (origin != -1 && destination != -1) {
+            minGraph.addVertex(this->vertices[destination]);
+            minGraph.addEdge(this->vertices[origin], this->vertices[destination], cost);
+            visited[destination] = true;
+        }
+    }
+
+    std::cout << "VERTICES" << std::endl;
+    minGraph.plain();
+    std::cout << "EDGES" << std::endl;
+    minGraph.showEdges();
+}
+
+template <class T, class C>
+void Graph<T, C>::prim(T& initial) {
+    int n = vertices.size();
+
+    std::vector<bool> visited(n, false);
+    std::vector<C> key(n, std::numeric_limits<C>::max());
+    std::vector<int> parent(n, -1);
+
+    int initialIndex = searchVertice(initial);
+
+    if (initialIndex == -1) {
+        std::cerr << "Error: Initial vertex not found." << std::endl;
+        return;
+    }
+
+    key[initialIndex] = 0;
+
+    for (int count = 0; count < n - 1; ++count) {
+        int u = -1;
+        C minKey = std::numeric_limits<C>::max();
+
+        // Find the vertex with the minimum key value
+        for (int v = 0; v < n; ++v) {
+            if (!visited[v] && key[v] < minKey) {
+                minKey = key[v];
+                u = v;
+            }
+        }
+
+        if (u == -1) {
+            std::cerr << "Error: Graph is not connected." << std::endl;
+            return;
+        }
+
+        visited[u] = true;
+
+        // Explore all adjacent vertices of the selected vertex 'u'
+        for (typename std::list < std::pair <int, C> >::iterator it = this->edges[u].begin();
+                it != this->edges[u].end() ; it++) {
+            int v = (*it).first;
+            C weight = (*it).second;
+
+            if (!visited[v] && weight < key[v]) {
+                parent[v] = u;
+                key[v] = weight;
+            }
+        }
+    }
+
+    // Print the minimum spanning tree
+    std::cout << "Edges of the Minimum Spanning Tree:" << std::endl;
+    for (int i = 1; i < n; ++i) {
+        std::cout << "Edge: " << this->vertices[parent[i]] << " - " << this->vertices[i] << " with weight " << key[i] << std::endl;
+    }
 }
 
 template < class T, class C >
-void Graph<T, C>::dijkstra(){
+void Graph<T, C>::dijkstra(T& initial) {
+    int n = vertices.size();
 
+    std::vector<C> distance(n, std::numeric_limits<C>::max());
+    std::vector<int> parent(n, -1);
+    std::vector<bool> visited(n, false);
+
+    // Find the index of the start vertex
+    int startIndex = searchVertice(initial);
+
+    if (startIndex == -1) {
+        std::cerr << "Error: Start vertex not found." << std::endl;
+        return;
+    }
+
+    distance[startIndex] = 0;
+
+    // Priority queue to store vertices and their distances
+    std::priority_queue<std::pair<C, int>, std::vector<std::pair<C, int>>, std::greater<std::pair<C, int>>> pq;
+    pq.push({0, startIndex});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        if (visited[u]) {
+            continue; // Skip if the vertex is already visited
+        }
+
+        visited[u] = true;
+
+        // Explore all neighbors of the selected vertex 'u'
+        for (const auto& neighbor : edges[u]) {
+            int v = neighbor.first;
+            C edgeCost = neighbor.second;
+
+            if (!visited[v] && distance[u] + edgeCost < distance[v]) {
+                distance[v] = distance[u] + edgeCost;
+                parent[v] = u;
+                pq.push({distance[v], v});
+            }
+        }
+    }
+
+    // Print the edges and distances
+    std::cout << "Edges and Distances from vertex " << initial << ":" << std::endl;
+    for (int i = 0; i < n; ++i) {
+        if (i != startIndex) {
+            std::cout << "Edge: " << vertices[parent[i]] << " - " << vertices[i] << " with distance " << distance[i] << std::endl;
+        }
+    }
 }
 
 //----------------------------------------------------------------------------------------------

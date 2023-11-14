@@ -63,8 +63,9 @@ public:
     void doDFSConnected(int currentVertex, std::vector<bool>& visited);
 
     bool stronglyConnected();
-    void prim();
-    void dijkstra();
+    void prim(T& initial);
+    void prim1(T& initial);
+    void dijkstra(T& initial);
 
 };
 
