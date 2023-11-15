@@ -435,13 +435,9 @@ std::vector <T> Graph<T, C>::getAsc(int i){
     Graph<T, C> g;
     g.setVertices(this->vertices);
 
-    g.plain();
-
     for(int i = 0 ; i < this->edges.size() ; i++){
-        std::cout << "edge " << std::endl;
         for(typename std::list<std::pair<int,C>>::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
             g.addEdge(this->vertices[(*it).first], this->vertices[i], (*it).second);
-            std::cout << "added" << std::endl;
         }
     }
 
