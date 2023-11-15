@@ -384,7 +384,7 @@ void Graph<T, C>::doDFSConnected(int currentVertex, std::vector<bool>& visited) 
         }
     }
 }
-/*
+
 template < class T, class C >
 bool Graph<T, C>::stronglyConnected(){
     std::vector<bool> visited(this->vertices.size(), false);
@@ -395,6 +395,7 @@ bool Graph<T, C>::stronglyConnected(){
             std::vector <T> desc = getDesc(i);
             std::vector <T> asc = getAsc(i);
             std::set <T> component;
+            std::set_intersection(desc.begin(), desc.end(), asc.begin(), asc.end(), std::inserter(component, component.begin()));
             if(component.size() == this->vertices.size()){
                 std::cout << "IS STRONGLY CONNECTED" << std::endl;
                 return true;
@@ -403,7 +404,7 @@ bool Graph<T, C>::stronglyConnected(){
     }
     return false;
 
-}*/
+}
 
 template <class T, class C>
 std::vector <T> Graph<T, C>::getDesc(int i){
