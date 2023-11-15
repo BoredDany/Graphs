@@ -64,6 +64,7 @@ public:
     void doDFSConnected(int currentVertex, std::vector<bool>& visited);
 
     std::vector <T> getDesc(int i);
+    void getDescDFS(int i, std::vector<T>& desc, std::vector<bool>& visited);
     std::vector <T> getAsc(int i);
     bool stronglyConnected();
 

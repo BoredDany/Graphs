@@ -403,26 +403,26 @@ bool Graph<T, C>::stronglyConnected(){
     }
     return false;
 
-}
+}*/
 
 template <class T, class C>
 std::vector <T> Graph<T, C>::getDesc(int i){
     std::vector<bool> visited(this->vertices.size(), false);
     std::vector <T> desc;
     desc.push_back(this->vertices[i]);
-    for(typename std::list < std::pair <int, C> >::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
-        desc.push_back(this->vertices[(*it).first]);
-        getDescDFS(i, desc);
-    }
+    visited[i] = true;
+    getDescDFS(i, desc, visited);
     return desc;
 }
 
 template <class T, class C>
-void Graph<T, C>::getDescDFS(int i, std::vector<T>& desc){
-    desc.push_back(this->vertices[i]);
+void Graph<T, C>::getDescDFS(int i, std::vector<T>& desc, std::vector<bool>& visited){
     for(typename std::list < std::pair <int, C> >::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
-        desc.push_back(this->vertices[(*it).first]);
-        getDescDFS(i, desc);
+        if(!visited[(*it).first]){
+            desc.push_back(this->vertices[(*it).first]);
+            visited[(*it).first] = true;
+            getDescDFS((*it).first, desc, visited);
+        }
     }
 }
 
@@ -434,7 +434,7 @@ std::vector <T> Graph<T, C>::getAsc(int i){
 
 
     return asc;
-}*/
+}
 
 template <class T, class C>
 void Graph<T, C>::prim(T& initial) {

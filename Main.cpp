@@ -82,9 +82,10 @@ int main(){
     g.dijkstra(vertice);
     g.bridgeEdges();*/
 
-    vertice = 1;
-    g.prim(vertice);
-    g.dijkstra(vertice);
+    std::vector <int> desc = g.getDesc(2);
+    for(int i: desc){
+        cout<<i<<" ";
+    }
 
     return 0;
 }
