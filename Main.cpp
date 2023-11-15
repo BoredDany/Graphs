@@ -76,11 +76,11 @@ int main(){
     vertice = 1;
     g.prim(vertice);
     g.dijkstra(vertice);
-    g.bridgeEdges();
-    std::vector <int> desc = g.getDesc(2);
-    for(int i: desc){
+    g.bridgeEdges();*/
+    std::vector <int> asc = g.getAsc(5);
+    for(int i: asc){
         cout<<i<<" ";
-    }*/
+    }
 
     return 0;
 

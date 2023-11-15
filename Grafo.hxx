@@ -40,7 +40,7 @@ std::vector < std::list < std::pair < int, C > > > Graph<T, C>::getEdges(){
 
 template < class T, class C >
 void Graph<T, C>::setVertices(std::vector < T >& vertices){
-    this.vertices = vertices;
+    this->vertices = vertices;
 }
 
 template < class T, class C >
@@ -435,9 +435,13 @@ std::vector <T> Graph<T, C>::getAsc(int i){
     Graph<T, C> g;
     g.setVertices(this->vertices);
 
+    g.plain();
+
     for(int i = 0 ; i < this->edges.size() ; i++){
+        std::cout << "edge " << std::endl;
         for(typename std::list<std::pair<int,C>>::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
-            g.addEdge(this->vertices[(*it).first], this->vertices[i]);
+            g.addEdge(this->vertices[(*it).first], this->vertices[i], (*it).second);
+            std::cout << "added" << std::endl;
         }
     }
 
