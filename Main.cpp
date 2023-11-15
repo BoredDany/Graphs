@@ -50,7 +50,6 @@ int main(){
     cout<<g.numVertices();
     cout<<"\nNUM EDGES: ";
     cout<<g.numEdges();
-
     cout << "ELIMINAR ARISTA" << endl;
     cout << "Origen: ";
     cin >> origen;
@@ -59,7 +58,6 @@ int main(){
     g.deleteEdge(origen, destino);
     cout<<"\nEDGES: "<<endl;
     g.showEdges();
-
     cout << "ELIMINAR VERTICE" << endl;
     cout << "Vertice: ";
     cin >> vertice;
@@ -68,10 +66,8 @@ int main(){
     g.plain();
     cout<<"\nEDGES: "<<endl;
     g.showEdges();
-
     cout<<"BFS: "<<endl;
     g.bfs();
-
     cout<<"\nDFS: "<<endl;
     g.dfs();
     bool connected = g.connected();
@@ -80,14 +76,14 @@ int main(){
     vertice = 1;
     g.prim(vertice);
     g.dijkstra(vertice);
-    g.bridgeEdges();*/
-
+    g.bridgeEdges();
     std::vector <int> desc = g.getDesc(2);
     for(int i: desc){
         cout<<i<<" ";
-    }
+    }*/
 
     return 0;
+
 }
 
 void readVertices(string archivo, Graph<int, int>& graph){
