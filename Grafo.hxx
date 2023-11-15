@@ -10,6 +10,8 @@
 #include <queue>
 #include <climits>
 #include <limits>
+#include <set>
+#include <algorithm>
 
 //constructors
 
@@ -430,10 +432,16 @@ void Graph<T, C>::getDescDFS(int i, std::vector<T>& desc, std::vector<bool>& vis
 template <class T, class C>
 std::vector <T> Graph<T, C>::getAsc(int i){
     std::vector <T> asc;
-    asc.push_back(this->vertices[i]);
+    Graph<T, C> g;
+    g.setVertices(this->vertices);
 
+    for(int i = 0 ; i < this->edges.size() ; i++){
+        for(typename std::list<std::pair<int,C>>::iterator it = this->edges[i].begin() ; it != this->edges[i].end() ; it++){
+            g.addEdge(this->vertices[(*it).first], this->vertices[i]);
+        }
+    }
 
-
+    asc = g.getDesc(i);
     return asc;
 }
 
